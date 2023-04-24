@@ -19,7 +19,6 @@
 
 ## project status
 - project is: _in progress
-- *still to do: search function only for beginning of words*
 
 ## link to github page
 
