@@ -1,2 +1,7 @@
 ::ffff:127.0.0.1 - - [25/Apr/2023:23:36:10 +0000] "GET /securl HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 ::ffff:127.0.0.1 - - [25/Apr/2023:23:36:12 +0000] "GET /securl HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [25/Apr/2023:23:39:09 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [25/Apr/2023:23:39:17 +0000] "GET /securl HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [25/Apr/2023:23:41:30 +0000] "GET /documentation HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [25/Apr/2023:23:41:35 +0000] "GET /documentation.html HTTP/1.1" 404 157 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::ffff:127.0.0.1 - - [25/Apr/2023:23:41:49 +0000] "GET /documentation HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"

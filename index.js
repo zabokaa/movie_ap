@@ -1,4 +1,3 @@
-// const bodyParser = require("body-parser");
 const app = require("express")();
   morgan = require("morgan"),
   fs = require("fs"),
@@ -30,7 +29,7 @@ let favMovies = [
     },
     {
         title: "Mouthpiece",
-        author: "Patricai Rozema"
+        author: "Patricia Rozema"
     },
     {
         title: "Circumstance",
