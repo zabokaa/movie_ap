@@ -1,20 +1,21 @@
 // const bodyParser = require("body-parser");
 const app = require("express")();
-  morgan = require("morgan");
+  morgan = require("morgan"),
+  fs = require("fs"),
+  path = require("path");
 
-  app.use(morgan("common"));
-  // morgan = require("morgan");
-    // fs = require("fs");
-    // path = require("path");
+// app.use(morgan("common"));
+
+
 
 
 // //will be used for routing requests a responses
-// const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt", {flags: "a"}));
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt", {flags: "a"}));
 
 // // middleware
-// app.use(morgan("combined", {stream: accessLogStream}));
+app.use(morgan("combined", {stream: accessLogStream}));
 // app.use(express.static("public"));
-// app.use(morgan("common"));
+
 // app.use(bodyParser.json());
 
 
