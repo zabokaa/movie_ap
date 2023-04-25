@@ -1,18 +1,19 @@
 const express = require("express");
+    morgan = require("morgan")
 const app = express(); //will be used for routing requests a responses
 
 let favMovies = [
     {
-      title: "Portrait of a Lady on Fire",
-      author: "'Céline Sciamma"
+        title: "Portrait of a Lady on Fire",
+        author: "'Céline Sciamma"
     },
     {
-      title: "Madalena",
-      author: "Madiano Marcheti"
+        title: "Madalena",
+        author: "Madiano Marcheti"
     },
     {
-      title: "Mouthpiece",
-      author: "Patricai Rozema"
+        title: "Mouthpiece",
+        author: "Patricai Rozema"
     },
     {
         title: "Circumstance",
@@ -44,9 +45,11 @@ let favMovies = [
     }
   ];
   
-  // GET requests
+//   app.METHOD(PATH, HANDLER)
+  app.use(morgan("common"));
+  // GET req
   app.get("/", (req, res) => {
-    res.send("Welcome to our movieteka");
+    res.send("Welcome to our Movieteka");
   });
   
   app.get("/documentation", (req, res) => {                  
@@ -57,8 +60,7 @@ let favMovies = [
     res.json(favMovies);
   });
   
-  
-  // LISTEN for requests
+  // LISTEN for req
   app.listen(5500, () => {
     console.log("My app is listening on port 5500.");
   });
