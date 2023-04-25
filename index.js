@@ -10,7 +10,7 @@ const app = require("express")();
 
 
 // //will be used for routing requests a responses
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt", {flags: "a"}));
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
 
 // // middleware
 app.use(morgan("combined", {stream: accessLogStream}));
