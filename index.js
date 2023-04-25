@@ -1,18 +1,22 @@
-const bodyParser = require("body-parser");
-const express = require("express");
-    morgan = require("morgan");
-    fs = require("fs");
-    path = require("path");
-    // what is the problem with following line ??
-    bodyParser = require("body-parser");
-const app = express(); //will be used for routing requests a responses
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt", {flags: "a"}));
+// const bodyParser = require("body-parser");
+// const express = require("express");
+// const app = express(); 
+// CLEANER CODE
+const app = require("express")();
 
-// middleware
-app.use(morgan("combined", {stream: accessLogStream}));
-app.use(express.static("public"));
-app.use(morgan("common"));
-app.use(bodyParser.json());
+    // morgan = require("morgan");
+    // fs = require("fs");
+    // path = require("path");
+
+
+// //will be used for routing requests a responses
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt", {flags: "a"}));
+
+// // middleware
+// app.use(morgan("combined", {stream: accessLogStream}));
+// app.use(express.static("public"));
+// app.use(morgan("common"));
+// app.use(bodyParser.json());
 
 
 let favMovies = [
@@ -65,9 +69,13 @@ let favMovies = [
     res.send("Welcome to our Movieteka");
   });
   
-  app.get("/secreturl", (req, res) => {
-    res.send('This is a secret url with super top-secret content.');
-  });
+  // //testing response : 
+  // app.get("/film", (req, res) => {
+  //   res.status(200).send({
+  //     title: "Rafiki",
+  //     author: "Wanuri Kahiu"
+  //   })
+  // });
 
   app.get("/documentation", (req, res) => {                  
     res.sendFile("public/documentation.html", { root: __dirname });
@@ -77,7 +85,7 @@ let favMovies = [
     res.json(favMovies);
   });
   
-  // LISTEN for req
+  // fire up the app
   app.listen(5500, () => {
     console.log("My app is listening on port 5500.");
   });
