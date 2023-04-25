@@ -1,10 +1,9 @@
 // const bodyParser = require("body-parser");
-// const express = require("express");
-// const app = express(); 
-// CLEANER CODE
 const app = require("express")();
+  morgan = require("morgan");
 
-    // morgan = require("morgan");
+  app.use(morgan("common"));
+  // morgan = require("morgan");
     // fs = require("fs");
     // path = require("path");
 
@@ -65,17 +64,10 @@ let favMovies = [
 //   app.METHOD(PATH, HANDLER)
 
   // GET req
+
   app.get("/", (req, res) => {
     res.send("Welcome to our Movieteka");
   });
-  
-  // //testing response : 
-  // app.get("/film", (req, res) => {
-  //   res.status(200).send({
-  //     title: "Rafiki",
-  //     author: "Wanuri Kahiu"
-  //   })
-  // });
 
   app.get("/documentation", (req, res) => {                  
     res.sendFile("public/documentation.html", { root: __dirname });
@@ -85,6 +77,11 @@ let favMovies = [
     res.json(favMovies);
   });
   
+  //renamed secreturl --> blocked by addblocker
+  app.get("/securl", (req, res) => {
+    res.send("super secret content..jajaja");
+  });
+
   // fire up the app
   app.listen(5500, () => {
     console.log("My app is listening on port 5500.");
