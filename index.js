@@ -1,6 +1,19 @@
+const bodyParser = require("body-parser");
 const express = require("express");
-    morgan = require("morgan")
+    morgan = require("morgan");
+    fs = require("fs");
+    path = require("path");
+    // what is the problem with following line ??
+    bodyParser = require("body-parser");
 const app = express(); //will be used for routing requests a responses
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt", {flags: "a"}));
+
+// middleware
+app.use(morgan("combined", {stream: accessLogStream}));
+app.use(express.static("public"));
+app.use(morgan("common"));
+app.use(bodyParser.json());
+
 
 let favMovies = [
     {
@@ -46,12 +59,16 @@ let favMovies = [
   ];
   
 //   app.METHOD(PATH, HANDLER)
-  app.use(morgan("common"));
+
   // GET req
   app.get("/", (req, res) => {
     res.send("Welcome to our Movieteka");
   });
   
+  app.get("/secreturl", (req, res) => {
+    res.send('This is a secret url with super top-secret content.');
+  });
+
   app.get("/documentation", (req, res) => {                  
     res.sendFile("public/documentation.html", { root: __dirname });
   });
