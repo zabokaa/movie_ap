@@ -3,19 +3,15 @@ const app = require("express")();
   fs = require("fs"),
   path = require("path");
 
-// app.use(morgan("common"));
-
-
-
-
 // //will be used for routing requests a responses
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
 
 // // middleware
 app.use(morgan("combined", {stream: accessLogStream}));
 // app.use(express.static("public"));
-
+// app.use("/public", express.static(path.resolve(__dirname, "public")));
 // app.use(bodyParser.json());
+
 
 
 let favMovies = [
@@ -30,7 +26,7 @@ let favMovies = [
     {
         title: "Mouthpiece",
         author: "Patricia Rozema"
-    },
+    }, 
     {
         title: "Circumstance",
         author: "Maryam Keshavarz"
@@ -80,6 +76,23 @@ let favMovies = [
   //renamed secreturl --> blocked by addblocker
   app.get("/securl", (req, res) => {
     res.send("super secret content..jajaja");
+  });
+
+
+// error handling middleware - always last but before listen
+  const bodyParser = require("body-parser"),
+    methodOverride = require("method-override");
+
+  app.use(bodyParser.urlencoded({
+  extended: true
+  }));
+
+  app.use(bodyParser.json());
+  app.use(methodOverride());
+
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("something broke !!");
   });
 
   // fire up the app
