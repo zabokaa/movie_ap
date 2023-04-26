@@ -1,17 +1,17 @@
-const app = require("express")();
+// const app = require("express")();
+// the combined one not working when I want to use express.static .. arrg
+
+const express = require("express"),
   morgan = require("morgan"),
   fs = require("fs"),
   path = require("path");
-
+const app = express();
 // //will be used for routing requests a responses
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
 
 // // middleware
 app.use(morgan("combined", {stream: accessLogStream}));
-// app.use(express.static("public"));
-// app.use("/public", express.static(path.resolve(__dirname, "public")));
-// app.use(bodyParser.json());
-
+app.use(express.static("public"));
 
 
 let favMovies = [

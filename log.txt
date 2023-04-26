@@ -12,3 +12,5 @@
 ::1 - - [26/Apr/2023:01:00:58 +0000] "GET /documentation.html HTTP/1.1" 404 157 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 ::1 - - [26/Apr/2023:01:01:03 +0000] "GET /documentation HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 ::1 - - [26/Apr/2023:01:01:41 +0000] "GET /securl HTTP/1.1" 200 28 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::1 - - [26/Apr/2023:01:36:56 +0000] "GET /documentation.html HTTP/1.1" 200 274 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+::1 - - [26/Apr/2023:01:37:00 +0000] "GET /documentation HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
