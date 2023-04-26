@@ -64,20 +64,10 @@ let favMovies = [
   app.get("/", (req, res) => {
     res.send("Welcome to our Movieteka");
   });
-
-  app.get("/documentation", (req, res) => {                  
-    res.sendFile("public/documentation.html", { root: __dirname });
-  });
   
   app.get("/movies", (req, res) => {
     res.json(favMovies);
   });
-  
-  //renamed secreturl --> blocked by addblocker
-  app.get("/securl", (req, res) => {
-    res.send("super secret content..jajaja");
-  });
-
 
 // error handling middleware - always last but before listen
   const bodyParser = require("body-parser"),
