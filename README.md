@@ -21,6 +21,8 @@
 - project is: _in progress
 
 ## link to github page
+-
+- also check out my movie recommender system [🐍] here: 
 
 
 ## acknowledgements
