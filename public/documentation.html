@@ -10,14 +10,14 @@
 <body>
     <h1>Movieteka</h1>
     <ol type="I">
-        <li>Return a list of ALL movies to the user</li>
-        <li>Return data about a genre (description) by name/title</li>
-        <li>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</li>
-        <li>Allow new users to register</li>
-        <li>Allow users to update their user info (username)</li>
-        <li>Allow users to add a movie to their list of favorites</li>
-        <li>Allow users to remove a movie from their list of favorites</li>
-        <li>Allow existing users to deregister</li>
+        <li>Return a list of ALL movies to the user URL: /movies METHOD: get</li>
+        <li>Return data about a genre (description) by name/title URL: /movies/:title METHOD: get</li>
+        <li>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user URL: /movies/genre/:genreName METHOD: get</li>
+        <li>Allow new users to register URL: /users METHOD: post</li>
+        <li>Allow users to update their user info (username) URL: /users/:id METHOD: post</li>
+        <li>Allow users to add a movie to their list of favorites URL: /users/:id/:movieTitle METHOD: post</li>
+        <li>Allow users to remove a movie from their list of favorites URL: /users/:id/:movieTitle METHOD: delete </li>
+        <li>Allow existing users to deregister URL: /users/:id METHOD: delete </li>
     </ol>
 
 </body>
