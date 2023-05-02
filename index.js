@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // app.use(morgan("combined", {stream: accessLogStream}));
 // app.use(express.static("public"));
 
-
+//blan k is %20
 let movies = [
     {
         title: "Portrait of a Lady on Fire",
@@ -149,7 +149,17 @@ let movies = [
 //   app.METHOD(PATH, HANDLER)
 
   // POST (create)
-
+  app.post("/users", (req, res) => {
+    const newUser = req.body;
+    if (newUser.name) {
+      newUser.id = uuid.v4();
+      users.push(newUser);
+      res.status(201).json(newUser);
+    }
+    else {
+      res.status(400).send("enter new user name");
+    }
+  });
   // GET req (read)
 
   app.get("/", (req, res) => {
@@ -160,6 +170,40 @@ let movies = [
     res.status(200).json(movies);
   });
 
+  app.get("/movies/:title", (req, res) => {
+    // const title = req.params.title;
+    const { title } =req.params;
+    const movie = movies.find(movie => movie.title === title);
+      if (movie) {
+        res.status(200).json(movie);
+      } 
+      else {
+        res.status(400).send("movie not found");
+      }
+  });
+
+  //GO DO: wanna display all movie titles by genre !!
+  app.get("/movies/genre/:genreName", (req, res) => {
+    const { genreName } =req.params;
+    const movie = movies.find(movie => movie.genre === genreName);
+      if (movie) {
+        res.status(200).json(movie);
+      } 
+      else {
+        res.status(400).send("no such genre found");
+      }
+  });
+
+  app.get("/movies/director/:directorName", (req, res) => {
+    const { directorName } =req.params;
+    const director = movies.find(movie => movie.director.name === directorName).director;
+      if (director) {
+        res.status(200).json(director);
+      } 
+      else {
+        res.status(400).send("director not found");
+      }
+  });
 
 
 
