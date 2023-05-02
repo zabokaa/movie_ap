@@ -235,7 +235,18 @@ let movies = [
   });
 
   // DELETE
-
+  app.delete("/users/:id/:movieTitle", (req, res) => {
+    const { id, movieTitle } = req.params;
+    let user = users.find (user => user.id == id)
+    if (user) {
+      user.favMovies = user.favMovies.filter(
+        title => title !== movieTitle);
+      res.status(200).send(`${movieTitle} has been removed from ${id}'s list of favourite movies.`);
+    }
+    else {
+      res.status(400).send("no such user or favourite movie");
+    }
+  });
 
 // error handling middleware - always last but before listen
   
