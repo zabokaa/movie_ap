@@ -160,6 +160,18 @@ let movies = [
       res.status(400).send("enter new user name");
     }
   });
+
+  app.post("/users/:id/:movieTitle", (req, res) => {
+    const { id, movieTitle } = req.params;
+    let user = users.find (user => user.id == id)
+    if (user) {
+      user.favMovies.push(movieTitle);
+      res.status(200).send(`${movieTitle} has been added to ${id}'s list of favourite movies.`);
+    }
+    else {
+      res.status(400).send("no such user");
+    }
+  });
   // GET req (read)
 
   app.get("/", (req, res) => {
@@ -208,7 +220,19 @@ let movies = [
 
 
   // PUT (update)
-
+  app.put("/users/:id", (req, res) => {
+    const { id } = req.params;
+    const updateUser = req.body;
+    // hier nur 2 ==  string and number, sonst nicht equal 
+    let user = users.find (user => user.id == id)
+    if (user) {
+      user.name = updateUser.name;
+      res.status(200).json(user);
+    }
+    else {
+      res.status(400).send("no such user");
+    }
+  });
 
   // DELETE
 
