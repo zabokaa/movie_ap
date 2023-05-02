@@ -248,6 +248,19 @@ let movies = [
     }
   });
 
+  app.delete("/users/:id", (req, res) => {
+    const { id } = req.params;
+    let user = users.find (user => user.id == id)
+
+    if (user) {
+      users = users.filter(user => user.id !== id);
+      res.status(200).send(`${id}'s email has been removed.`);
+    }
+    else {
+      res.status(400).send("no such user");
+    }
+  });
+
 // error handling middleware - always last but before listen
   
     methodOverride = require("method-override");
