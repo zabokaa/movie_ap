@@ -29,5 +29,7 @@ let userSchema = mongoose.Schema({
 let Movie = mongoose.model("Movie", movieSchema);
 let User = mongoose.model("User", userSchema);
 
+//CREATING MODELS and XPORT 2 index.js
+
 module.exports.Movie = Movie;
 module.exports.User = User;
