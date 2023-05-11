@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-let movieSchema = mongoos.Schema({
+let moviesSchema = mongoose.Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
     genre: {
@@ -11,23 +11,25 @@ let movieSchema = mongoos.Schema({
         name: String,
         bio: String,
         birthyear: Date,
-        gender: String
+        gender: String,
     },
     actors: [String],
     imagePath: String,
     featured: Boolean,
-    year: Date
+    year: Date,
 });
 
-let userSchema = mongoose.Schema({
+let usersSchema = mongoose.Schema({
+    _id: {type: String},
     username: {type: String, required: true},
-    password: {type: mongoose.Mixed, required: true},
     bday: Date,
-    favMovies: [{type: mongoose.Schema.Types.ObjectId, ref: "Movie"}]
+    password: {type: String, required: true},
+    email: {type: String, required: true}, 
+    favMovies: [{type: mongoose.Schema.Types.ObjectId, ref: "Movie"}],
 });
 
-let Movie = mongoose.model("Movie", movieSchema);
-let User = mongoose.model("User", userSchema);
+let Movie = mongoose.model("Movie", moviesSchema);
+let User = mongoose.model("User", usersSchema);
 
 //CREATING MODELS and XPORT 2 index.js
 
