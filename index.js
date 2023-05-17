@@ -68,7 +68,21 @@ app.post("/users", (req, res) => {
     });
 });
 
-
+//adding new movie to favMovies:
+app.post("/users/:username/movies/:movieID", (req, res) => {
+  Users.findOneAndUpdate({ username: req.params.username }, {
+     $push: { favMovies: req.params.movieID }
+   },
+   { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("error: " + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
 
 
 
@@ -165,39 +179,49 @@ app.get("/users", (req,res) => {
   // PUT (update)
 // updating user data:
 app.put("/users/:username", (req, res) => {
-  Users.findOneAndUpdate(
-    { username: req.params.username },
-    {
-      $set: {
-        username: req.body.username,
-        bday: req.body.birthday,
-        password: req.body.password,
-        email: req.body.email,
-      },
-    },
-    { new: true }
-  )
-    .then((user) => {
-      if (user === null) {
+  Users.findOneAndUpdate({ username: req.params.username }, {
+    $set: {
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      bday: req.body.bday
+    }
+  }, { new: true })
+    .then((updatedUser) => {
+      if (!updatedUser) {
         return res.status(404).send("error: user not found :/");
       } else {
-        res.json(user);
+        res.json(updatedUser);
       }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('error: ' + err);
+      res.status(500).send("error: " + err);
     });
 });
 
 
-// adding new movie to favMovies:
+
+
 
   // DELETE
 // delete movie from favMovies:
 
 // delete user:
-
+app.delete("/users/:username", (req, res) => {
+  Users.findOneAndRemove({ username: req.params.username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.username + " not found");
+      } else {
+        res.status(200).send(req.params.username + " was deleted");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("error: " + err);
+    });
+});
 // ERROR HANDLING middleware - always last but before listen
   
   //   methodOverride = require("method-override");
