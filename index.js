@@ -70,19 +70,24 @@ app.post("/users", (req, res) => {
 
 //adding new movie to favMovies:
 app.post("/users/:username/movies/:movieID", (req, res) => {
-  Users.findOneAndUpdate({ username: req.params.username }, {
-     $push: { favMovies: req.params.movieID }
-   },
-   { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $push: { favMovies: req.params.movieID } },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).send("error: user not found :/");
+      } else {
+        res.json(updatedUser);
+      }
+    })
+    .catch((err) => {
       console.error(err);
       res.status(500).send("error: " + err);
-    } else {
-      res.json(updatedUser);
-    }
-  });
+    });
 });
+
 
 
 
@@ -214,7 +219,7 @@ app.delete("/users/:username", (req, res) => {
       if (!user) {
         res.status(400).send(req.params.username + " not found");
       } else {
-        res.status(200).send(req.params.username + " was deleted");
+        res.status(200).send(req.params.username + " is deleted now");
       }
     })
     .catch((err) => {
