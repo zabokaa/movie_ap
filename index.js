@@ -15,8 +15,6 @@ const Models = require("./models.js");
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
 
 //CONNECTING + CHECKING to self-hosted mongoDB
 mongoose.connect("mongodb://localhost:27017/cfDB", {
@@ -41,8 +39,8 @@ app.use(morgan("combined", { stream: accessLogStream }));
 
   // POST (create)
 
-// create a new user profile
 
+// create a new user profile:
 app.post("/users", (req, res) => {
   Users.findOne({ username: req.body.username })
     .then((user) => {
@@ -60,13 +58,13 @@ app.post("/users", (req, res) => {
         })
         .catch((error) => {
           console.error(error);
-          res.status(500).send("Error: " + error);
+          res.status(500).send("error: " + error);
         });
       }
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).send("Error: " + error);
+      res.status(500).send("error: " + error);
     });
 });
 
@@ -79,7 +77,7 @@ app.post("/users", (req, res) => {
 //testing:
 app.get('/', (req, res) => {
   res.send('Welcome to my movie API!');
-  });
+});
 
 // list of all movies:
 app.get("/movies", (req,res) => {
@@ -89,20 +87,116 @@ app.get("/movies", (req,res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send("Error: " + err);
+      res.status(500).send("error: " + err);
     });
-}
-  );
+});
+
+// 1 movie by title:
+app.get("/movies/title/:title", (req, res) => {
+  Movies.findOne({title: req.params.title})
+    .then((movies) => {
+      if (!movies) {
+        return res.status(404).send("error " + req.params.title + " not found :/");
+      }
+      res.status(201).json(movies);
+    })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("error: " + err);
+    });
+});
+
+// list of movies by genre:
+app.get("/movies/genre/:genre", (req, res) => {
+  Movies.find({"genre.name": req.params.genre})
+    .then((movies) => {
+      if (movies.length == 0) {
+        return res.status(404).send("error: no movies found in the genre " + req.params.genre + " :/");
+      }
+      res.status(201).json(movies);
+    })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("error: " + err);
+    });
+});
+
+// data about 1 director by name:
+app.get("/movies/director_description/:director", (req, res) => {
+  Movies.findOne({"director.name": req.params.director})
+    .then((movies) => {
+      if (!movies) {
+        return res.status(404).send("error " + req.params.director + " not found :/");
+      }
+      res.status(201).json(movies);
+    })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("error: " + err);
+    });
+});
+
+// movies by director:
+app.get("/movies/director/:director", (req, res) => {
+  Movies.find({"director.name": req.params.director})
+    .then((movies) => {
+      if (movies.length == 0) {
+        return res.status(404).send("error " + req.params.director + " not found :/");
+      }
+      res.status(201).json(movies);
+    })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("error: " + err);
+    });
+});
+// list of all users:
+app.get("/users", (req,res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("error: " + err);
+    });
+});
  
-
-  
-
-
   // PUT (update)
+// updating user data:
+app.put("/users/:username", (req, res) => {
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    {
+      $set: {
+        username: req.body.username,
+        bday: req.body.birthday,
+        password: req.body.password,
+        email: req.body.email,
+      },
+    },
+    { new: true }
+  )
+    .then((user) => {
+      if (user === null) {
+        return res.status(404).send("error: user not found :/");
+      } else {
+        res.json(user);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('error: ' + err);
+    });
+});
 
+
+// adding new movie to favMovies:
 
   // DELETE
+// delete movie from favMovies:
 
+// delete user:
 
 // ERROR HANDLING middleware - always last but before listen
   
