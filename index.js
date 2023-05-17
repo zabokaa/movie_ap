@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
 const bodyParser = require("body-parser");
-//to allow cross-origin requests e.g. from Insomnia:
+//to allow cross-origin requests:
 const cors = require("cors");
 
 //INTEGRATING mongoose w/ rest api
@@ -16,7 +16,7 @@ const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//CONNECTING + CHECKING to self-hosted mongoDB
+//CONNECTING + CHECKING conne to self-hosted mongoDB
 mongoose.connect("mongodb://localhost:27017/cfDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -38,7 +38,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {f
 app.use(morgan("combined", { stream: accessLogStream }));
 
   // POST (create)
-
 
 // create a new user profile:
 app.post("/users", (req, res) => {
@@ -88,11 +87,7 @@ app.post("/users/:username/movies/:movieID", (req, res) => {
     });
 });
 
-
-
-
-  // GET req (read)
- 
+  // GET req (read) 
 //testing:
 app.get('/', (req, res) => {
   res.send('Welcome to my movie API!');
@@ -180,7 +175,24 @@ app.get("/users", (req,res) => {
       res.status(500).send("error: " + err);
     });
 });
- 
+
+// favMovies of 1 user:
+app.get("/users/:username/favMovies", (req, res) => {
+  Users.findOne({ username: req.params.username })
+    .populate("favMovies") // Populate the referenced movies
+    .exec()
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send("error: user not found :/");
+      } else {
+        res.status(200).json(user.favMovies);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("error: " + error);
+    });
+});
   // PUT (update)
 // updating user data:
 app.put("/users/:username", (req, res) => {
@@ -205,32 +217,27 @@ app.put("/users/:username", (req, res) => {
     });
 });
 
-
-
-
-
   // DELETE
 // delete movie from favMovies:
 app.delete("/users/:username/movies/:movieID", (req, res) => {
-	Users.findOneAndUpdate(
-		{ Username: req.params.username },
-		{
-			$pull: { FavoriteMovies: req.params.movieID },
-		},
-		{ new: true }
-	)
-		.then((updatedUser) => {
-			if (!updatedUser) {
-				return res.status(404).send("error: user not found :/");
-			} else {
-				res.json(updatedUser);
-			}
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send("Error: " + error);
-		});
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    { $pull: { favMovies: req.params.movieID } },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).send("error: user not found :/");
+      } else {
+        res.json(updatedUser);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("error: " + error);
+    });
 });
+
 // delete user:
 app.delete("/users/:username", (req, res) => {
   Users.findOneAndRemove({ username: req.params.username })
@@ -248,14 +255,9 @@ app.delete("/users/:username", (req, res) => {
 });
 // ERROR HANDLING middleware - always last but before listen
   
-  //   methodOverride = require("method-override");
+    methodOverride = require("method-override");
+  app.use(methodOverride());
 
-  // app.use(bodyParser.urlencoded({
-  // extended: true
-  // }));
-
-  // app.use(bodyParser.json());
-  // app.use(methodOverride());
   app.use("/documentation", express.static("public"));
   
   app.use((err, req, res, next) => {
