@@ -1,9 +1,12 @@
-const express = require("express"),
-  morgan = require("morgan"),
-  fs = require("fs"),
-  uuid = require("uuid"),
-  bodyParser = require("body-parser");
-  // path = require("path");
+const express = require("express");
+const morgan = require("morgan");
+const fs = require("fs");
+const path = require("path");
+const uuid = require("uuid");
+const bodyParser = require("body-parser");
+//to allow cross-origin requests e.g. from Insomnia:
+const cors = require("cors");
+
 //INTEGRATING mongoose w/ rest api
 const app = express();
 
@@ -16,22 +19,25 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 //CONNECTING + CHECKING to self-hosted mongoDB
-mongoose.connect("mongodb://localhost:27017/cfDB", { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB", error);
-  });
+mongoose.connect("mongodb://localhost:27017/cfDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log("Connected to MongoDB");
+})
+.catch((error) => {
+  console.error("Error connecting to MongoDB", error);
+});
 
 
 // MIDDLEWARE
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-//will be used for routing requests a responses
-// const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
-
+app.use(cors());   //enables CORS for all routes
+//will be used for routing requests a responses:
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
+app.use(morgan("combined", { stream: accessLogStream }));
 
   // POST (create)
 
