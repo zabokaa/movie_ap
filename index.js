@@ -211,7 +211,26 @@ app.put("/users/:username", (req, res) => {
 
   // DELETE
 // delete movie from favMovies:
-
+app.delete("/users/:username/movies/:movieID", (req, res) => {
+	Users.findOneAndUpdate(
+		{ Username: req.params.username },
+		{
+			$pull: { FavoriteMovies: req.params.movieID },
+		},
+		{ new: true }
+	)
+		.then((updatedUser) => {
+			if (!updatedUser) {
+				return res.status(404).send("error: user not found :/");
+			} else {
+				res.json(updatedUser);
+			}
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send("Error: " + error);
+		});
+});
 // delete user:
 app.delete("/users/:username", (req, res) => {
   Users.findOneAndRemove({ username: req.params.username })
