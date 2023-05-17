@@ -37,3 +37,4 @@
 ::1 - - [17/May/2023:09:20:17 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:5501/movies" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
 ::1 - - [17/May/2023:09:31:59 +0000] "GET /movies HTTP/1.1" 201 11031 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 ::1 - - [17/May/2023:09:31:59 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:5501/movies" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [17/May/2023:09:44:00 +0000] "GET /movies HTTP/1.1" 201 11031 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
