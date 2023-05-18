@@ -34,3 +34,22 @@ passport.use(
     }
   )
 );
+
+passport.use(
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey: "your_jwt_secreto",
+      },
+      (jwtPayload, callback) => {
+        return Users.findById(jwtPayload._id)
+          .then((user) => {
+            return callback(null, user);
+          })
+          .catch((error) => {
+            return callback(error);
+          });
+      }
+    )
+  );
+  
