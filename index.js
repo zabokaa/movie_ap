@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
-const bodyParser = require("body-parser");
 //to allow cross-origin requests:
 const cors = require("cors");
 
@@ -29,15 +28,16 @@ mongoose.connect("mongodb://localhost:27017/cfDB", {
 });
 
 
-// MIDDLEWARE
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cors());   //enables CORS for all routes
-//will be used for routing requests a responses:
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
+// Middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors()); // Enable CORS for all routes
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), { flags: "a" });
 app.use(morgan("combined", { stream: accessLogStream }));
-//importing auth + passport file -- always after bodyParser
-let auth = require("./auth.js")(app);
+
+// Importing auth + passport file - always after bodyParser
+const auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport.js");
 
@@ -98,7 +98,8 @@ app.get('/', (req, res) => {
 });
 
 // list of all movies:
-app.get("/movies", (req,res) => {
+// 3 parameters: url, AuthZ, callback
+app.get("/movies", passport.authenticate("jwt", {session: false}),(req,res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
