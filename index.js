@@ -36,6 +36,10 @@ app.use(cors());   //enables CORS for all routes
 //will be used for routing requests a responses:
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {flags: "a"});
 app.use(morgan("combined", { stream: accessLogStream }));
+//importing auth + passport file -- always after bodyParser
+let auth = require("./auth.js")(app);
+const passport = require("passport");
+require("./passport.js");
 
   // POST (create)
 
