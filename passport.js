@@ -6,31 +6,31 @@ const passportJWT = require("passport-jwt");
 const Users = Models.User;
 const { Strategy: JWTStrategy, ExtractJwt } = require("passport-jwt");
 
-
 passport.use(
   new LocalStrategy(
     {
       usernameField: "username",
       passwordField: "password",
     },
-    (username, password, callback) => {
+    (username, password) => {
       console.log(username + " " + password);
 
-      Users.findOne({ username: username })
+      return Users.findOne({ username: username })
         .then((user) => {
           if (!user) {
             console.log("username incorrect");
-            return callback(null, false, {
+            return Promise.reject({
               message: "username or password are not correct :/",
             });
           }
 
           console.log("finished");
-          return callback(null, user);
-        }).catch((error) => {
-          console.log(error);
-          return callback(error);
+          return Promise.resolve(user);
         })
+        .catch((error) => {
+          console.log(error);
+          return Promise.reject(error);
+        });
     }
   )
 );
