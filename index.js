@@ -36,15 +36,30 @@ app.use(cors()); // Enable CORS for all routes
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), { flags: "a" });
 app.use(morgan("combined", { stream: accessLogStream }));
 
-// Importing auth + passport file - always after bodyParser
+// Importing auth + passport file 
 const auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport.js");
+// server-sdie validation:
+const {check, validationResult} = require("express-validator");
 
   // POST (create)
 
 // create a new user profile:
-app.post("/users", (req, res) => {
+app.post("/users", 
+  [
+  check("username", "username is required").not().isEmpty(),
+  check("username", "alphanumeric characters are not allowed").isAlphanumeric(),
+  check("password", "password is required").not().isEmpty(),
+  check("email", "invalid email address").isEmail().normalizeEmail(),
+  ],
+  (req, res) => {
+    // checking for errors:
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ username: req.body.username })
     .then((user) => {
