@@ -27,11 +27,11 @@ let userSchema = mongoose.Schema({
     email: {type: String, required: true}, 
     favMovies: [{type: mongoose.Schema.Types.ObjectId, ref: "Movie"}],
 });
-// hashed password func:
+// hashed PW func:
 userSchema.statics.hashPassword = (password) => {
     return bcrypt.hashSync(password, 10);
 };
-  
+ // validate PW func: 
 userSchema.methods.validatePassword = function(password) {
     return bcrypt.compareSync(password, this.Password);
 };

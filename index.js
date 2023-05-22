@@ -45,6 +45,7 @@ require("./passport.js");
 
 // create a new user profile:
 app.post("/users", (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ username: req.body.username })
     .then((user) => {
       if (user) {
