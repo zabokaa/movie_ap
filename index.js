@@ -54,7 +54,8 @@ app.post("/users", (req, res) => {
           username: req.body.username,
           password: req.body.password,
           email: req.body.email,
-          bday: req.body.bday
+          bday: req.body.bday,
+          favMovies: req.body.favMovies
         })
         .then((user) => {
           res.status(201).json(user);
@@ -260,7 +261,7 @@ app.delete("/users/:username", passport.authenticate("jwt", {session: false}), (
 });
 // ERROR HANDLING middleware - always last but before listen
   
-    methodOverride = require("method-override");
+  methodOverride = require("method-override");
   app.use(methodOverride());
 
   app.use("/documentation", express.static("public"));
