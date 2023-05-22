@@ -25,6 +25,14 @@ passport.use(
             });
           }
 
+          // Validate the password
+          if (!user.validatePassword(password)) {
+            console.log("password incorrect");
+            return Promise.reject({
+              message: "username or password are not correct :/",
+            });
+          }
+
           console.log("finished");
           return Promise.resolve(user);
         })

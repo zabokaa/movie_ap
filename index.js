@@ -53,7 +53,7 @@ app.post("/users", (req, res) => {
       } else {
         Users.create({
           username: req.body.username,
-          password: req.body.password,
+          password: hashedPassword,
           email: req.body.email,
           bday: req.body.bday,
           favMovies: req.body.favMovies
