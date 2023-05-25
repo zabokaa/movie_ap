@@ -288,6 +288,6 @@ app.delete("/users/:username", passport.authenticate("jwt", {session: false}), (
   });
 
   // fire up the app
-  app.listen(5501, () => {
-    console.log("My app is listening on port 5501.");
+  app.listen(5500, () => {
+    console.log("My app is listening on port 5500.");
   });
