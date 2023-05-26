@@ -40,6 +40,9 @@ app.use(morgan("combined", { stream: accessLogStream }));
 const auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport.js");
+// and initalize passport:
+app.use(passport.initialize());
+
 // server-sdie validation:
 const {check, validationResult} = require("express-validator");
 
@@ -60,7 +63,7 @@ app.post("/users",
       return res.status(422).json({ errors: errors.array() });
     }
     
-  let hashedPassword = Users.hashPassword(req.body.Password);
+  let hashedPassword = Users.hashPassword(req.body.password);
   Users.findOne({ username: req.body.username })
     .then((user) => {
       if (user) {
