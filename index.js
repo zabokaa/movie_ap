@@ -34,7 +34,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.json()); 
 app.use(cors()); // Enable CORS for all routes
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), { flags: "a" });
