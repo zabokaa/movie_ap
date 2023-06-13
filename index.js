@@ -16,7 +16,11 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 //CONNECTING + CHECKING conne to self-hosted mongoDB
-mongoose.connect("mongodb://localhost:27017/cfDB", {
+// mongoose.connect("mongodb://localhost:27017/cfDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+mongoose.connect("mongodb+srv://zabokaa_0:8qOBuEwy36f5HgBo@cluster0.0uoalu7.mongodb.net/?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
