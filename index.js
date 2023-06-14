@@ -119,7 +119,7 @@ app.post("/users/:username/favMovies/:movieID", passport.authenticate("jwt", {se
   // GET req (read) 
 //testing:
 app.get('/', (req, res) => {
-  res.send('Welcome to my movie API!');
+  res.send('welcome to movieteka!');
 });
 
 // list of all movies:
