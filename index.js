@@ -15,18 +15,6 @@ const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//CONNECTING + CHECKING conne to self-hosted mongoDB
-// mongoose.connect("mongodb://localhost:27017/cfDB", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// })
-// .then(() => {
-//   console.log("Connected to MongoDB");
-// })
-// .catch((error) => {
-//   console.error("Error connecting to MongoDB", error);
-// });
-
 // CONNECTING to mongodbAtlas w/ ENV VAR:
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
