@@ -40,49 +40,6 @@ app.use(passport.initialize());
 const {check, validationResult} = require("express-validator");
 
   // POST (create)
-
-// // create a new user profile:
-// app.post("/users", 
-//   [
-//   check("username", "username is required").not().isEmpty(),
-//   check("username", "alphanumeric characters are not allowed").isAlphanumeric(),
-//   check("password", "password is required").not().isEmpty(),
-//   check("email", "invalid email address").isEmail().normalizeEmail(),
-//   ],
-//   (req, res) => {
-//     // checking for errors:
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(422).json({ errors: errors.array() });
-//     }
-    
-//   let hashedPassword = Users.hashPassword(req.body.password);
-//   Users.findOne({ username: req.body.username })
-//     .then((user) => {
-//       if (user) {
-//         return res.status(400).send(req.body.username + " already exists");
-//       } else {
-//         Users.create({
-//           username: req.body.username,
-//           password: hashedPassword,
-//           email: req.body.email,
-//           bday: req.body.bday,
-//           favMovies: req.body.favMovies
-//         })
-//         .then((user) => {
-//           res.status(201).json(user);
-//         })
-//         .catch((error) => {
-//           console.error(error);
-//           res.status(500).send("error: " + error);
-//         });
-//       }
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//       res.status(500).send("error: " + error);
-//     });
-// });
 // create a new user profile:
 app.post("/users", 
   [
