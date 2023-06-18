@@ -5,7 +5,7 @@
 * [objective](#objective)
 * [key features](#key-features)
 * [project status](#project-status)
-* [link to github page](#link-to-github-page)
+* [link to page](#link-to-page)
 * [acknowledgements](#acknowledgements)
 
 ## objective
@@ -20,8 +20,8 @@
 ## project status
 - project is: _in progress
 
-## link to github page
--
+## link to page
+- https://movieteka-zabokaa.herokuapp.com/
 - also check out my movie recommender system [🐍] here: 
 
 
