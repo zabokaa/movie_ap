@@ -228,29 +228,9 @@ app.get("/users/:username/favMovies", passport.authenticate("jwt", {session: fal
       res.status(500).send("error: " + error);
     });
 });
+
   // PUT (update)
 // updating user data:
-// app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req, res) => {
-//   Users.findOneAndUpdate({ username: req.params.username }, {
-//     $set: {
-//       username: req.body.username,
-//       password: hashedPassword,
-//       email: req.body.email,
-//       bday: req.body.bday
-//     }
-//   }, { new: true })
-//     .then((updatedUser) => {
-//       if (!updatedUser) {
-//         return res.status(404).send("error: user not found :/");
-//       } else {
-//         res.json(updatedUser);
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send("error: " + err);
-//     });
-// });
 app.put("/users/:username", passport.authenticate("jwt", { session: false }), (req, res) => {
   // Checking for errors:
   const errors = validationResult(req);
