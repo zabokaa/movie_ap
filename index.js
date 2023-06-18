@@ -198,16 +198,18 @@ app.get("/movies/director/:director/movies", passport.authenticate("jwt", {sessi
     });
 });
 // list of all users:
-app.get("/users", passport.authenticate("jwt", {session: false}), (req,res) => {
+app.get("/users", passport.authenticate("jwt", { session: false }), (req, res) => {
   Users.find()
+    .select("-password") // Exclude the password field from the response
     .then((users) => {
-      res.status(201).json(users);
+      res.status(200).json(users);
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("error: " + err);
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("error: " + error);
     });
 });
+
 
 // favMovies of 1 user:
 app.get("/users/:username/favMovies", passport.authenticate("jwt", {session: false}), (req, res) => {
