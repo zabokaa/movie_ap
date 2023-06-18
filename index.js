@@ -230,15 +230,54 @@ app.get("/users/:username/favMovies", passport.authenticate("jwt", {session: fal
 });
   // PUT (update)
 // updating user data:
-app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req, res) => {
-  Users.findOneAndUpdate({ username: req.params.username }, {
-    $set: {
-      username: req.body.username,
-      password: hashedPassword,
-      email: req.body.email,
-      bday: req.body.bday
-    }
-  }, { new: true })
+// app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req, res) => {
+//   Users.findOneAndUpdate({ username: req.params.username }, {
+//     $set: {
+//       username: req.body.username,
+//       password: hashedPassword,
+//       email: req.body.email,
+//       bday: req.body.bday
+//     }
+//   }, { new: true })
+//     .then((updatedUser) => {
+//       if (!updatedUser) {
+//         return res.status(404).send("error: user not found :/");
+//       } else {
+//         res.json(updatedUser);
+//       }
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send("error: " + err);
+//     });
+// });
+app.put("/users/:username", passport.authenticate("jwt", { session: false }), (req, res) => {
+  // Checking for errors:
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  // Generate new hashed password if the request includes a new password
+  let hashedPassword;
+  if (req.body.password) {
+    hashedPassword = Users.hashPassword(req.body.password);
+  }
+
+  // Find and update the user
+  Users.findOneAndUpdate(
+    { username: req.params.username },
+    {
+      $set: {
+        username: req.body.username,
+        email: req.body.email,
+        bday: req.body.bday,
+        password: hashedPassword || req.user.password, // Use the new hashed password if provided, otherwise use the existing hashed password
+      },
+    },
+    { new: true }
+  )
+    .select("-password") // Exclude the password field from the response
     .then((updatedUser) => {
       if (!updatedUser) {
         return res.status(404).send("error: user not found :/");
@@ -246,11 +285,12 @@ app.put("/users/:username", passport.authenticate("jwt", {session: false}), (req
         res.json(updatedUser);
       }
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("error: " + err);
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("error: " + error);
     });
 });
+
 
   // DELETE
 // delete movie from favMovies:
