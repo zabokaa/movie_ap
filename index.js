@@ -283,11 +283,7 @@ app.delete("/users/:username", passport.authenticate("jwt", {session: false}), (
     res.status(500).send("something broke !!");
   });
 
-  // fire up the app
-  // app.listen(5500, () => {
-  //   console.log("My app is listening on port 5500.");
-  // });
-  // updated for heroku:
+  // fire up for heroku:
   const port = process.env.PORT || 5500;
   app.listen(port, '0.0.0.0',() => {
     console.log("Listening on Port " + port);

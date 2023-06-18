@@ -13,14 +13,14 @@ passport.use(
       usernameField: "username",
       passwordField: "password",
     },
-    (username, password) => {
+    (username, password, callback) => {
       console.log(username + " " + password);
 
       return Users.findOne({ username: username })
         .then((user) => {
           if (!user) {
             console.log("username incorrect");
-            return Promise.reject({
+            return callback(null, false, {
               message: "username or password are not correct :/",
             });
           }
@@ -28,7 +28,7 @@ passport.use(
           // Validate the password
           if (!user.validatePassword(password)) {
             console.log("password incorrect");
-            return Promise.reject({
+            return callback(null, false, {
               message: "username or password are not correct :/",
             });
           }
@@ -38,7 +38,7 @@ passport.use(
         })
         .catch((error) => {
           console.log(error);
-          return Promise.reject(error);
+          return callback(error);
         });
     }
   )
@@ -48,16 +48,20 @@ passport.use(
 passport.use(
   new JWTStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("Bearer"),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: "your_jwt_secreta",
     },
     (jwtPayload, callback) => {
-      return Users.findById(jwtPayload._id)
+      return Users.findById(jwtPayload._id) //check this again !!
         .then((user) => {
-          return callback(null, user);
+          if (user) {
+            return callback(null, user);
+          } else {
+            return callback(null,false);
+          }
         })
         .catch((error) => {
-          return callback(error);
+          return callback(error, false);
         });
     }
   )
