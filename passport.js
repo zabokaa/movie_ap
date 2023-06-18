@@ -34,7 +34,7 @@ passport.use(
           }
 
           console.log("finished");
-          return Promise.resolve(user);
+          return callback(null, user);
         })
         .catch((error) => {
           console.log(error);
