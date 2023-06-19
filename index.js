@@ -121,8 +121,8 @@ app.post("/users/:username/favMovies/:movieID", passport.authenticate("jwt", {se
 
   // GET req (read) 
 //testing:
-app.get('/', (req, res) => {
-  res.send('welcome to movieteka!');
+app.get("/", (req, res) => {
+  res.send("welcome to movieteka !");
 });
 
 // list of all movies:
@@ -154,7 +154,7 @@ app.get("/movies/title/:title", (req, res) => {
 });
 
 // list of movies by genre:
-app.get("/movies/genre/:genre/movies", (req, res) => {
+app.get("/movies/genre/:genre", (req, res) => {
   Movies.find({"genre.name": req.params.genre})
     .then((movies) => {
       if (movies.length == 0) {
@@ -184,7 +184,7 @@ app.get("/movies/director_description/:director", (req, res) => {
 });
 
 // movies by director:
-app.get("/movies/director/:director/movies", (req,req) => {
+app.get("/movies/director/:director", (req,req) => {
   Movies.find({"director.name": req.params.director})
     .then((movies) => {
       if (movies.length == 0) {
