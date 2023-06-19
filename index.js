@@ -184,7 +184,7 @@ app.get("/movies/director_description/:director", (req, res) => {
 });
 
 // movies by director:
-app.get("/movies/director/:director/movies", => {
+app.get("/movies/director/:director/movies", (req,req) => {
   Movies.find({"director.name": req.params.director})
     .then((movies) => {
       if (movies.length == 0) {
