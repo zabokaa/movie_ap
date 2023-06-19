@@ -127,7 +127,7 @@ app.get("/", (req, res) => {
 
 // list of all movies:
 // 3 parameters: url, AuthZ, callback
-app.get("/movies", (req,res) => {
+app.get("/movies", (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -184,7 +184,7 @@ app.get("/movies/director_description/:director", (req, res) => {
 });
 
 // movies by director:
-app.get("/movies/director/:director", (req,req) => {
+app.get("/movies/director/:director", (req, res) => {
   Movies.find({"director.name": req.params.director})
     .then((movies) => {
       if (movies.length == 0) {
