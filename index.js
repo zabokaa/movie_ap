@@ -5,7 +5,29 @@ const path = require("path");
 const uuid = require("uuid");
 //to allow cross-origin requests:
 const cors = require("cors");
+/**
+ * @typedef {Object} Movie
+ * @property {string} title - The title of the movie.
+ * @property {string} genre - The genre of the movie.
+ * @property {string} director - The name of the movie's director.
+ */
 
+/**
+ * @typedef {Object} User
+ * @property {string} username - The username of the user.
+ * @property {string} email - The email address of the user.
+ * @property {string} bday - The birthdate of the user.
+ * @property {string[]} favMovies - An array of movie IDs representing favorite movies of the user.
+ */
+
+/**
+ * @typedef {Object} UserModel
+ * @property {Function} hashPassword - A function to hash the password.
+ * @property {Function} findOne - A function to find a user in the database.
+ * @property {Function} create - A function to create a new user in the database.
+ * @property {Function} findOneAndUpdate - A function to find and update a user in the database.
+ * @property {Function} findOneAndRemove - A function to find and remove a user from the database.
+ */
 //INTEGRATING mongoose w/ rest api
 const app = express();
 
@@ -39,8 +61,14 @@ app.use(passport.initialize());
 // server-sdie validation:
 const {check, validationResult} = require("express-validator");
 
-  // POST (create)
-// create a new user profile:
+/**
+ * @route POST /users
+ * @group Users - Operations related to users.
+ * @param {User} request.body.required - The user information to create a new user.
+ * @returns {User} 201 - The created user.
+ * @returns {Error} 422 - Validation error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.post("/users", 
   [
     check("username", "username is required").not().isEmpty(),
@@ -99,7 +127,15 @@ app.post("/users",
 });
 
 
-//adding new movie to favMovies:
+/**
+ * @route POST /users/:username/favMovies/:movieID
+ * @group Users - Operations related to users.
+ * @param {string} username.path.required - The username of the user.
+ * @param {string} movieID.path.required - The ID of the movie to add to favorites.
+ * @returns {User} 200 - The updated user with the added favorite movie.
+ * @returns {Error} 404 - User not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.post("/users/:username/favMovies/:movieID", passport.authenticate("jwt", {session: false}), (req, res) => {
   Users.findOneAndUpdate(
     { username: req.params.username },
@@ -119,18 +155,21 @@ app.post("/users/:username/favMovies/:movieID", passport.authenticate("jwt", {se
     });
 });
 
-  // GET req (read) 
-//testing:
+
 app.get("/", (req, res) => {
   res.send("welcome to movieteka !");
 });
 
-// list of all movies:
-// 3 parameters: url, AuthZ, callback
-app.get("/movies", passport.authenticate("jwt", { session: false }), (req, res) => {
+/**
+ * @route GET /movies
+ * @group Movies - Operations related to movies.
+ * @returns {Movie[]} 201 - An array of all movies.
+ * @returns {Error} 500 - Internal server error.
+ */
+app.get("/movies", passport.authenticate("jwt", { session: false }), (req, res) => {  // 3 parameters: url, AuthZ, callback
   Movies.find()
     .then((movies) => {
-      res.status(201).json(movies);
+      res.status(201).json(movies);   
     })
     .catch((err) => {
       console.error(err);
@@ -138,7 +177,14 @@ app.get("/movies", passport.authenticate("jwt", { session: false }), (req, res) 
     });
 });
 
-// 1 movie by title:
+/**
+ * @route GET /movies/title/:title
+ * @group Movies - Operations related to movies.
+ * @param {string} title.path.required - The title of the movie to search for.
+ * @returns {Movie} 201 - The movie with the specified title.
+ * @returns {Error} 404 - Movie not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.get("/movies/title/:title", passport.authenticate("jwt", { session: false }), (req, res) => {
   Movies.findOne({title: req.params.title})
     .then((movies) => {
@@ -153,7 +199,15 @@ app.get("/movies/title/:title", passport.authenticate("jwt", { session: false })
     });
 });
 
-// list of movies by genre:
+/**
+ * @route GET /movies/genre/:genre
+ * @group Movies - Operations related to movies.
+ * @param {string} genre.path.required - The genre of the movies to search for.
+ * @returns {Movie[]} 201 - An array of movies with the specified genre.
+ * @returns {Error} 404 - No movies found in the specified genre error.
+ * @returns {Error} 500 - Internal server error.
+ */
+
 app.get("/movies/genre/:genre", passport.authenticate("jwt", { session: false }), (req, res) => {
   Movies.find({"genre.name": req.params.genre})
     .then((movies) => {
@@ -168,7 +222,14 @@ app.get("/movies/genre/:genre", passport.authenticate("jwt", { session: false })
     });
 });
 
-// data about 1 director by name:
+/**
+ * @route GET /movies/director_description/:director
+ * @group Movies - Operations related to movies.
+ * @param {string} director.path.required - The name of the director to search for.
+ * @returns {Movie} 201 - The movie directed by the specified director.
+ * @returns {Error} 404 - Director not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.get("/movies/director_description/:director", passport.authenticate("jwt", { session: false }), (req, res) => {
   Movies.findOne({"director.name": req.params.director})
     .then((movies) => {
@@ -183,7 +244,14 @@ app.get("/movies/director_description/:director", passport.authenticate("jwt", {
     });
 });
 
-// movies by director:
+/**
+ * @route GET /movies/director/:director
+ * @group Movies - Operations related to movies.
+ * @param {string} director.path.required - The name of the director to search for.
+ * @returns {Movie[]} 201 - An array of movies directed by the specified director.
+ * @returns {Error} 404 - No movies found with the specified director error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.get("/movies/director/:director", passport.authenticate("jwt", { session: false }), (req, res) => {
   Movies.find({"director.name": req.params.director})
     .then((movies) => {
@@ -197,7 +265,14 @@ app.get("/movies/director/:director", passport.authenticate("jwt", { session: fa
         res.status(500).send("error: " + err);
     });
 });
-// list of all users:
+
+
+/**
+ * @route GET /users
+ * @group Users - Operations related to users.
+ * @returns {User[]} 200 - An array of all users (excluding password field).
+ * @returns {Error} 500 - Internal server error.
+ */
 app.get("/users", passport.authenticate("jwt", { session: false }), (req, res) => {
   Users.find()
     .select("-password") // Exclude the password field from the response
@@ -211,7 +286,14 @@ app.get("/users", passport.authenticate("jwt", { session: false }), (req, res) =
 });
 
 
-// favMovies of 1 user:
+/**
+ * @route GET /users/:username/favMovies
+ * @group Users - Operations related to users.
+ * @param {string} username.path.required - The username of the user.
+ * @returns {Movie[]} 200 - An array of favorite movies of the specified user.
+ * @returns {Error} 404 - User not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.get("/users/:username/favMovies", passport.authenticate("jwt", {session: false}), (req, res) => {
   Users.findOne({ username: req.params.username })
     .populate("favMovies") // Populate the referenced movies
@@ -229,8 +311,16 @@ app.get("/users/:username/favMovies", passport.authenticate("jwt", {session: fal
     });
 });
 
-  // PUT (update)
-// updating user data:
+/**
+ * @route PUT /users/:username
+ * @group Users - Operations related to users.
+ * @param {string} username.path.required - The username of the user to update.
+ * @param {User} request.body.required - The updated user information.
+ * @returns {User} 200 - The updated user.
+ * @returns {Error} 422 - Validation error.
+ * @returns {Error} 404 - User not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.put("/users/:username", passport.authenticate("jwt", { session: false }), (req, res) => {
   // Checking for errors:
   const errors = validationResult(req);
@@ -244,7 +334,20 @@ app.put("/users/:username", passport.authenticate("jwt", { session: false }), (r
     hashedPassword = Users.hashPassword(req.body.password);
   }
 
-  // Find and update the user
+/**
+     * @typedef {Object} UpdateUserRequestBody
+     * @property {string} username - The updated username of the user.
+     * @property {string} email - The updated email address of the user.
+     * @property {string} bday - The updated birthdate of the user.
+     * @property {string} password - The updated password of the user.
+     */
+
+    /**
+     * @typedef {Object} UpdateUserResponseBody
+     * @property {string} username - The updated username of the user.
+     * @property {string} email - The updated email address of the user.
+     * @property {string} bday - The updated birthdate of the user.
+     */
   Users.findOneAndUpdate(
     { username: req.params.username },
     {
@@ -273,6 +376,16 @@ app.put("/users/:username", passport.authenticate("jwt", { session: false }), (r
 
 
   // DELETE
+
+/**
+ * @route DELETE /users/:username/favMovies/:movieID
+ * @group Users - Operations related to users.
+ * @param {string} username.path.required - The username of the user.
+ * @param {string} movieID.path.required - The ID of the movie to remove from favorites.
+ * @returns {User} 200 - The updated user with the removed favorite movie.
+ * @returns {Error} 404 - User not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 // delete movie from favMovies:
 app.delete("/users/:username/favMovies/:movieID", passport.authenticate("jwt", {session: false}), (req, res) => {
   Users.findOneAndUpdate(
@@ -293,7 +406,14 @@ app.delete("/users/:username/favMovies/:movieID", passport.authenticate("jwt", {
     });
 });
 
-// delete user:
+/**
+ * @route DELETE /users/:username
+ * @group Users - Operations related to users.
+ * @param {string} username.path.required - The username of the user to delete.
+ * @returns {string} 200 - A success message indicating the user is deleted.
+ * @returns {Error} 404 - User not found error.
+ * @returns {Error} 500 - Internal server error.
+ */
 app.delete("/users/:username", passport.authenticate("jwt", {session: false}), (req, res) => {
   Users.findOneAndRemove({ username: req.params.username })
     .then((user) => {
@@ -313,6 +433,13 @@ app.delete("/users/:username", passport.authenticate("jwt", {session: false}), (
   methodOverride = require("method-override");
   app.use(methodOverride());
 
+  /**
+ * @middleware
+ * @param {Error} err - The error object.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next function.
+ */
   app.use("/documentation", express.static("public"));
   
   app.use((err, req, res, next) => {
@@ -320,8 +447,10 @@ app.delete("/users/:username", passport.authenticate("jwt", {session: false}), (
     res.status(500).send("something broke !!");
   });
 
-  // fire up for heroku:
+/**
+ * Start the server on the specified port.
+ */
   const port = process.env.PORT || 5500;
   app.listen(port, '0.0.0.0',() => {
     console.log("Listening on Port " + port);
-  });
+  });       // fire up for heroku
