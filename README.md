@@ -4,6 +4,7 @@
 ## table of contents
 * [objective](#objective)
 * [key features](#key-features)
+* [technologies](#technologies)
 * [project status](#project-status)
 * [link to page](#link-to-page)
 * [acknowledgements](#acknowledgements)
@@ -17,12 +18,15 @@
 - users can update their personal information
 - users can create a list of their most loved movies
 
+## technologies
+HTML | CSS | JavaScript | Node.js | Express | MongoDB
+
 ## project status
 - project is: _in progress
 
 ## link to page
 - https://movieteka-zabokaa.herokuapp.com/
-- also check out my movie recommender system [🐍] here: 
+- also check out my movie recommender system [🐍] 
 
 
 ## acknowledgements
